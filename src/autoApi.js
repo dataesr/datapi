@@ -13,7 +13,7 @@ export default function createAutoApi(collectionName) {
   // GET /api/:collection — liste tous les documents
   router.get("/", async (req, res) => {
     try {
-      const { limit = 20, skip = 0, sort, ...rawFilters } = req.query;
+      const { limit = 20, skip = 0, sort, ...filters } = req.query;
 
       const query = Model.find(filters).skip(Number(skip)).limit(Number(limit));
       if (sort) query.sort(sort);
