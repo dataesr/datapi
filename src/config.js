@@ -16,8 +16,8 @@ export default {
   // excluded      : bloquer complètement la collection (API + doc)
   collections: {
     atlas2023: {
-      genericRoute: true,
-      customRoutes: ["get-with-secret"],
+      genericRoute: false,
+      customRoutes: ["get-without-secret"],
     },
     boards: { excluded: true },
   },

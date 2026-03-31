@@ -52,6 +52,8 @@ router.get("/doc/:collection", async (req, res) => {
     const Model = getModel(collection);
     const sample = await Model.find({}).limit(20);
     const properties = inferProperties(sample);
+    console.log(properties);
+    
 
     const collectionConfig = config.collections?.[collection] ?? { genericRoute: true, customRoutes: [] };
 
@@ -95,9 +97,9 @@ router.get("/doc/:collection", async (req, res) => {
 
     // Routes custom connues
     const customRouteDefs = {
-      "get-with-secret": {
+      "get-without-secret": {
         // idem route generique mais filtre avec secret = "non" et exclusion du champ secret des résultats
-        path: `/api/${collection}/get-with-secret`,
+        path: `/api/${collection}/get-without-secret`,
         spec: {
           get: {
             summary: `Lister les documents non-secrets de ${collection}`,
