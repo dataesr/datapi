@@ -6,7 +6,7 @@ const router = express.Router();
 const schema = new mongoose.Schema({}, { strict: false, timestamps: true });
 const getModel = (name) => mongoose.models[name] || mongoose.model(name, schema, name);
 
-router.get("/:collection/get-with-secret", async (req, res) => {
+router.get("/:collection/get-without-secret", async (req, res) => {
   try {
     const { limit = 20, skip = 0, sort, ...filters } = req.query;
     const Model = getModel(req.params.collection);
@@ -22,7 +22,7 @@ router.get("/:collection/get-with-secret", async (req, res) => {
 
     res.json({ total, data: docs });
   } catch (err) {
-    console.error("[get-with-secret] error:", err.message);
+    console.error("[get-without-secret] error:", err.message);
     res.status(500).json({ error: err.message });
   }
 });
