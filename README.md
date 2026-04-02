@@ -4,12 +4,16 @@ Exposition des jeux de données
 
 ## Python
 
+`cd python`
+
 ### Run
 
 `flask run`
-
+See http://127.0.0.1:5000/
 
 ## Javascript
+
+`cd js`
 
 ### Installation
 

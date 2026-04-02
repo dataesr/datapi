@@ -1,6 +1,6 @@
 from flask import Flask
 
-from python.main import filter_data, read_data, write_data
+from main import filter_data, read_data, write_data
 
 app = Flask(__name__)
 
