@@ -52,11 +52,7 @@ router.get("/doc/:collection", async (req, res) => {
     const Model = getModel(collection);
     const sample = await Model.find({}).limit(20);
     const properties = inferProperties(sample);
-    console.log(properties);
-    
-
     const collectionConfig = config.collections?.[collection] ?? { genericRoute: true, customRoutes: [] };
-
     const paths = {};
 
     // Route générique - https://spec.openapis.org/oas/v3.0.0.html#paths-object
