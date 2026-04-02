@@ -1,12 +1,14 @@
 {
-  "name": "dataesr-api",
-  "version": "0.1.0",
+  "name": "datapi",
+  "version": "0.0.0",
   "private": true,
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start-server": "node server.js",
+    "dev-server": "nodemon server.js"
   },
   "author": "dataesr",
   "license": "MIT",
