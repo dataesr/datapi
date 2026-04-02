@@ -2,4 +2,7 @@
 Exposition des jeux de données
 
 
-To execute python: `python main.py`
+To run python Flask server: `flask run`
+
+To install JS `npm i`
+To run JS `npm start`

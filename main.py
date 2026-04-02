@@ -42,10 +42,3 @@ def write_data(data):
   collection.insert_many(data)
   end = time.time()
   print(end - start)
-
-data = read_data()
-print(len(data))
-filtered_data = filter_data(data)
-print(len(filtered_data))
-write_data(filtered_data)
-print("done")
