@@ -9,7 +9,12 @@ Exposition des jeux de données
 ### Run
 
 `flask run`
-See http://127.0.0.1:5000/
+
+See :
+* Hello World page: http://127.0.0.1:5000/
+* Swagger Documentation: http://127.0.0.1:5000/doc
+* OpenAPI JSON format: http://127.0.0.1:5000/api/doc/atlas2023
+
 
 ## Javascript
 
@@ -25,6 +30,6 @@ See http://127.0.0.1:5000/
 `node server.js`
 
 Pour la collection "atlas2023" :
-* Documentation Swagger: http://localhost:3000/doc/atlas2023
+* Swagger Documentation: http://localhost:3000/doc/atlas2023
 * OpenAPI JSON format: http://localhost:3000/api/doc/atlas2023
 * API: http://localhost:3000/api/atlas2023
