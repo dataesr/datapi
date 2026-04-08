@@ -1,37 +1,22 @@
-import time
-
 from mongo import close_db, get_collection
 
 def read_data(collection_name):
-  print("read_table")
   try:
-    start = time.time()
     collection = get_collection(collection_name)
     data = list(collection.find())
     close_db()
-    end = time.time()
-    print(end - start)
     return data
   except Exception as e:
     raise Exception("The following error occurred: ", e)
 
 def filter_data(data):
-  print("filter_data")
-  start = time.time()
-  res = [d for d in data if d.get("secret") == "non"]
-  end = time.time()
-  print(end - start)
-  return res
+  return [d for d in data if d.get("secret") == "non"]
 
 def write_data(collection_name, data):
-  print("write_data")
-  start = time.time()
   collection = get_collection(f"{collection_name}-tmp")
   # TODO: use bulk_insert instead of insert_many
   collection.insert_many(data)
   close_db()
-  end = time.time()
-  print(end - start)
 
 def infer_type(obj):
   openapi_types = {
@@ -50,11 +35,9 @@ def infer_type(obj):
     print(f"Error: {object_type} is unknown.")
   return openapi_type
 
-def get_collection_doc(collection):
-  print("get_collection_doc")
-  start = time.time()
-  collection2 = get_collection(collection)
-  docs = collection2.find({}).limit(20)
+def get_collection_doc(collection_name):
+  collection = get_collection(collection_name)
+  docs = collection.find({}).limit(20)
   properties = {}
   for doc in docs:
     keys = [t for t in doc.keys() if t not in ['_id']]
@@ -63,10 +46,8 @@ def get_collection_doc(collection):
         infered_type = infer_type(doc[key])
         if infered_type != 'None':
           properties[key] = infered_type
-  end = time.time()
-  print(end - start)
   paths = {
-    f"/api/{collection}": {
+    f"/api/{collection_name}": {
       "get": {
           "summary": "Lister les documents de ${collection}",
           "parameters": [
@@ -94,12 +75,4 @@ def get_collection_doc(collection):
         },
     }
   }
-  return {
-    "openapi": "3.0.0",
-    "info": {
-      "title": f"datapi - {collection}",
-      "version": "1.0.0",
-      "description": f"Documentation générée automatiquement à partir d'un échantillon de 20 documents de la collection **{collection}**.",
-    },
-    "paths": paths,
-  }
+  return paths
