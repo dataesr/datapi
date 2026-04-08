@@ -45,16 +45,16 @@ def get_collection_doc(collection_name):
       if key not in properties:
         infered_type = infer_type(doc[key])
         if infered_type != 'None':
-          properties[key] = infered_type
+          properties[key] = { "type": infered_type }
   paths = {
     f"/api/{collection_name}": {
       "get": {
-          "summary": "Lister les documents de ${collection}",
+          "summary": f"Lister les documents de {collection_name}",
           "parameters": [
             { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
             { "name": "skip", "in": "query", "schema": { "type": "integer", "default": 0 } },
             { "name": "sort", "in": "query", "schema": { "type": "string" }, "description": "Ex: -annee-universitaire" },
-            [{ "name": prop, "in": "query", "schema": { "type": properties[prop] }, "description": f"Filtrer par {prop}" } for prop in properties]
+            *[{ "name": prop, "in": "query", "schema": { "type": properties[prop]["type"] }, "description": f"Filtrer par {prop}" } for prop in properties]
           ],
           "responses": {
             200: {

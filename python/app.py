@@ -12,7 +12,6 @@ try:
 except FileNotFoundError:
     print("Error: The file \"config.json\" was not found.")
 
-# TODO Display documentation for all collections ie. create a config file to list all collections
 paths = [get_collection_doc(collection_name) for collection_name in config["collections"]]
 merged = dict()
 for path in paths:
@@ -31,6 +30,7 @@ api_doc(app, config=doc, url_prefix="/doc", title="API doc")
 
 @app.route("/")
 def hello_world():
+    # TODO: Replace it by a list of available collections , and link to the dedicated page
     return "<p>Hello, World!</p>"
 
 @app.route("/read")
