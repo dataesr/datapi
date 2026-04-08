@@ -20,27 +20,28 @@ except FileNotFoundError:
 @app.get("/", response_class=HTMLResponse)
 def home():
     list = [
-        f"<li><a href=\"./docs/{collection}\">{collection}</a></li>" for collection in config["collections"]]
+        f"<li><a href=\"./docs/{collection}\">{collection}</a></li>" for collection in config.get("collections", {}).keys()]
     return f"<h1>{title}</h1><ul>{''.join(list)}</ul>"
 
 
 @app.get("/api/{collection}")
 def api_collection(collection, limit: int = 20, skip: int = 0):
-    if collection not in config["collections"]:
+    if collection not in config.get("collections", {}).keys():
         return f"The collection \"{collection}\" does not exist", 500
-    return get_data(collection, limit=limit, skip=skip)
+    filter = config.get("collections", {}).get(collection, {}).get("filter", {})
+    return get_data(collection, filter=filter, limit=limit, skip=skip)
 
 
 @app.get("/docs/{collection}")
 def doc_collection(collection):
-    if collection not in config["collections"]:
+    if collection not in config.get("collections", {}).keys():
         return f"The collection \"{collection}\" does not exist", 500
     return get_swagger_ui_html(openapi_url=f"/json/{collection}", title=title)
 
 
 @app.get("/json/{collection}")
 def json_collection(collection):
-    if collection not in config["collections"]:
+    if collection not in config.get("collections", {}).keys():
         return f"The collection \"{collection}\" does not exist", 500
     paths = get_json_collection(collection)
     return {

@@ -1,3 +1,8 @@
 {
-  "collections": ["atlas2023", "fr-esr-all-projects-synthese"]
+  "collections": {
+    "atlas2023": {
+      "filter": { "secret": "non" }
+    },
+    "fr-esr-all-projects-synthese": {}
+  }
 }

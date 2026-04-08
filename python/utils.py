@@ -1,20 +1,6 @@
 from mongo import close_db, get_collection
 
 
-def get_data(collection_name, limit: int = 20, skip: int = 0):
-  try:
-    collection = get_collection(collection_name)
-    data = list(collection.find({}, { "_id": False }, limit=limit, skip=skip))
-    close_db()
-    return data
-  except Exception as e:
-    raise Exception("The following error occurred: ", e)
-
-
-# def filter_data(data):
-#   return [d for d in data if d.get("secret") == "non"]
-
-
 def infer_type(obj):
   openapi_types = {
     "bool": "boolean",
@@ -31,6 +17,16 @@ def infer_type(obj):
   if openapi_type == "unknown":
     print(f"Error: {object_type} is unknown.")
   return openapi_type
+
+
+def get_data(collection_name, filter: dict = {},limit: int = 20, skip: int = 0):
+  try:
+    collection = get_collection(collection_name)
+    data = list(collection.find(filter, { "_id": False }, limit=limit, skip=skip))
+    close_db()
+    return data
+  except Exception as e:
+    raise Exception("The following error occurred: ", e)
 
 
 def get_json_collection(collection_name):
