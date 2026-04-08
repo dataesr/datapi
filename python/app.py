@@ -3,13 +3,12 @@ from fastapi.responses import HTMLResponse
 from fastapi.openapi.docs import get_swagger_ui_html
 import json
 
-from utils import get_collection_doc
+from utils import get_data, get_json_collection
 
-app = FastAPI(
-    title="datApi",
-    description="From data to API",
-    version="0.0.0"
-)
+description = "From data to API"
+title = "datApi"
+version = "0.0.0"
+app = FastAPI(description=description, title=title, version=version)
 
 try:
     with open("config.json", "r") as file:
@@ -22,35 +21,34 @@ except FileNotFoundError:
 def home():
     list = [
         f"<li><a href=\"./docs/{collection}\">{collection}</a></li>" for collection in config["collections"]]
-    return f"<h1>datApi</h1><ul>{''.join(list)}</ul>"
+    return f"<h1>{title}</h1><ul>{''.join(list)}</ul>"
 
 
-# @app.get("/read")
-# def read():
-#     data = read_data(config["collections"][0])
-#     filtered_data = filter_data(data)
-#     write_data(config["collections"][0], filtered_data)
-#     return "<p>Job done</p>"
+@app.get("/api/{collection}")
+def api_collection(collection, limit: int = 20, skip: int = 0):
+    if collection not in config["collections"]:
+        return f"The collection \"{collection}\" does not exist", 500
+    return get_data(collection, limit=limit, skip=skip)
+
+
+@app.get("/docs/{collection}")
+def doc_collection(collection):
+    if collection not in config["collections"]:
+        return f"The collection \"{collection}\" does not exist", 500
+    return get_swagger_ui_html(openapi_url=f"/json/{collection}", title=title)
 
 
 @app.get("/json/{collection}")
 def json_collection(collection):
     if collection not in config["collections"]:
         return f"The collection \"{collection}\" does not exist", 500
-    paths = get_collection_doc(collection)
+    paths = get_json_collection(collection)
     return {
         "openapi": "3.0.0",
         "info": {
-            "title": f"datapi - {collection}",
-            "version": "1.0.0",
+            "title": f"{title} - {collection}",
+            "version": version,
             "description": f"Documentation générée automatiquement à partir d'un échantillon de 20 documents de la collection **{collection}**.",
         },
         "paths": paths,
     }
-
-
-@app.get("/docs/{collection}")
-def swagger_collection(collection):
-    if collection not in config["collections"]:
-        return f"The collection \"{collection}\" does not exist", 500
-    return get_swagger_ui_html(openapi_url=f"/json/{collection}", title="datApi")

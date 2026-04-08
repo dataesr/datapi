@@ -1,22 +1,19 @@
 from mongo import close_db, get_collection
 
-# def read_data(collection_name):
-#   try:
-#     collection = get_collection(collection_name)
-#     data = list(collection.find())
-#     close_db()
-#     return data
-#   except Exception as e:
-#     raise Exception("The following error occurred: ", e)
+
+def get_data(collection_name, limit: int = 20, skip: int = 0):
+  try:
+    collection = get_collection(collection_name)
+    data = list(collection.find({}, { "_id": False }, limit=limit, skip=skip))
+    close_db()
+    return data
+  except Exception as e:
+    raise Exception("The following error occurred: ", e)
+
 
 # def filter_data(data):
 #   return [d for d in data if d.get("secret") == "non"]
 
-# def write_data(collection_name, data):
-#   collection = get_collection(f"{collection_name}-tmp")
-#   # TODO: use bulk_insert instead of insert_many
-#   collection.insert_many(data)
-#   close_db()
 
 def infer_type(obj):
   openapi_types = {
@@ -35,16 +32,16 @@ def infer_type(obj):
     print(f"Error: {object_type} is unknown.")
   return openapi_type
 
-def get_collection_doc(collection_name):
+
+def get_json_collection(collection_name):
   collection = get_collection(collection_name)
-  docs = collection.find({}).limit(20)
+  docs = collection.find({}, { "_id": False }).limit(20)
   properties = {}
   for doc in docs:
-    keys = [t for t in doc.keys() if t not in ['_id']]
-    for key in keys:
+    for key in doc.keys():
       if key not in properties:
         infered_type = infer_type(doc[key])
-        if infered_type != 'None':
+        if infered_type != "None":
           properties[key] = { "type": infered_type }
   paths = {
     f"/api/{collection_name}": {

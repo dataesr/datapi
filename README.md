@@ -12,6 +12,7 @@ Exposition des jeux de données
 
 See :
 * Homepage: http://127.0.0.1:8000/
+* API: http://127.0.0.1:5000/api/atlas2023
 * Swagger Documentation: http://127.0.0.1:5000/docs/atlas2023
 * OpenAPI JSON format: http://127.0.0.1:5000/json/atlas2023
 
@@ -27,7 +28,7 @@ See :
 
 ### Run
 
-`node server.js`
+`npx nodemon server.js` or in prod `node server.js`
 
 Pour la collection "atlas2023" :
 * Swagger Documentation: http://localhost:3000/doc/atlas2023
