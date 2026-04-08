@@ -8,12 +8,12 @@ Exposition des jeux de données
 
 ### Run
 
-`flask run`
+`fastapi dev` or in pord `fastapi run`
 
 See :
-* Hello World page: http://127.0.0.1:5000/
-* Swagger Documentation: http://127.0.0.1:5000/doc
-* OpenAPI JSON format: http://127.0.0.1:5000/api/doc/atlas2023
+* Homepage: http://127.0.0.1:8000/
+* Swagger Documentation: http://127.0.0.1:5000/docs/atlas2023
+* OpenAPI JSON format: http://127.0.0.1:5000/json/atlas2023
 
 
 ## Javascript

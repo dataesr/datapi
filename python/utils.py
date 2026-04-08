@@ -1,22 +1,22 @@
 from mongo import close_db, get_collection
 
-def read_data(collection_name):
-  try:
-    collection = get_collection(collection_name)
-    data = list(collection.find())
-    close_db()
-    return data
-  except Exception as e:
-    raise Exception("The following error occurred: ", e)
+# def read_data(collection_name):
+#   try:
+#     collection = get_collection(collection_name)
+#     data = list(collection.find())
+#     close_db()
+#     return data
+#   except Exception as e:
+#     raise Exception("The following error occurred: ", e)
 
-def filter_data(data):
-  return [d for d in data if d.get("secret") == "non"]
+# def filter_data(data):
+#   return [d for d in data if d.get("secret") == "non"]
 
-def write_data(collection_name, data):
-  collection = get_collection(f"{collection_name}-tmp")
-  # TODO: use bulk_insert instead of insert_many
-  collection.insert_many(data)
-  close_db()
+# def write_data(collection_name, data):
+#   collection = get_collection(f"{collection_name}-tmp")
+#   # TODO: use bulk_insert instead of insert_many
+#   collection.insert_many(data)
+#   close_db()
 
 def infer_type(obj):
   openapi_types = {
