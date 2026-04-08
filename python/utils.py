@@ -2,11 +2,11 @@ import time
 
 from mongo import close_db, get_collection
 
-def read_data():
+def read_data(collection_name):
   print("read_table")
   try:
     start = time.time()
-    collection = get_collection("atlas2023")
+    collection = get_collection(collection_name)
     data = list(collection.find())
     close_db()
     end = time.time()
@@ -23,10 +23,10 @@ def filter_data(data):
   print(end - start)
   return res
 
-def write_data(data):
+def write_data(collection_name, data):
   print("write_data")
   start = time.time()
-  collection = get_collection("atlas2023-anne")
+  collection = get_collection(f"{collection_name}-tmp")
   # TODO: use bulk_insert instead of insert_many
   collection.insert_many(data)
   close_db()
@@ -35,23 +35,23 @@ def write_data(data):
 
 def infer_type(obj):
   openapi_types = {
-    'bool': 'boolean',
-    'datetime': 'string',
-    'dict': 'object',
-    'float': 'number',
-    'int': 'integer',
-    'list': 'array',
-    'NoneType': 'None',
-    'str': 'string'
+    "bool": "boolean",
+    "datetime": "string",
+    "dict": "object",
+    "float": "number",
+    "int": "integer",
+    "list": "array",
+    "NoneType": "None",
+    "str": "string"
   }
   object_type = type(obj).__name__
-  openapi_type = openapi_types[object_type] if object_type in openapi_types else 'unknown'
-  if openapi_type == 'unknown':
+  openapi_type = openapi_types[object_type] if object_type in openapi_types else "unknown"
+  if openapi_type == "unknown":
     print(f"Error: {object_type} is unknown.")
   return openapi_type
 
 def get_collection_doc(collection):
-  print('get_collection_doc')
+  print("get_collection_doc")
   start = time.time()
   collection2 = get_collection(collection)
   docs = collection2.find({}).limit(20)
