@@ -3,6 +3,9 @@
     "atlas2023": {
       "filter": { "secret": "non" }
     },
-    "fr-esr-all-projects-synthese": {}
+    "fr-esr-all-projects-synthese": {},
+    "196901870.csv": {
+      "connector": "cartable"
+    }
   }
 }

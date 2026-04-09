@@ -7,8 +7,8 @@ from typing import Union
 # Load environment variables from .env file
 load_dotenv()
 
-mongoDbName = os.getenv("MONGO_DB_NAME", "dataesr")
-mongoUri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_db_name = os.getenv("MONGO_DB_NAME", "dataesr")
+mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 
 client = None
 
@@ -16,11 +16,11 @@ client = None
 def get_client() -> Union[pymongo.MongoClient, None]:
   global client
   if client is None:
-    client = pymongo.MongoClient(mongoUri, connectTimeoutMS=60000)
+    client = pymongo.MongoClient(mongo_uri, connectTimeoutMS=60000)
   return client
 
 
-def get_database(database: str = mongoDbName) -> Union[pymongo.database.Database, None]:
+def get_database(database: str = mongo_db_name) -> Union[pymongo.database.Database, None]:
   _client = get_client()
   db = _client[database]
   return db

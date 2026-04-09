@@ -8,7 +8,7 @@ Exposition des jeux de données
 
 ### Run
 
-`fastapi dev` or in pord `fastapi run`
+`fastapi dev` or in prod `fastapi run`
 
 See :
 * Homepage: http://127.0.0.1:8000/

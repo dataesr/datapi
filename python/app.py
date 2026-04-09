@@ -3,7 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.openapi.docs import get_swagger_ui_html
 import json
 
-from utils import get_data, get_json_collection
+from s3 import get_s3_data
+from utils import get_data, get_json_collection, get_openapi_schema
 
 description = "From data to API"
 title = "datApi"
@@ -28,7 +29,8 @@ def home():
 def api_collection(collection, limit: int = 20, skip: int = 0):
     if collection not in config.get("collections", {}).keys():
         return f"The collection \"{collection}\" does not exist", 500
-    filter = config.get("collections", {}).get(collection, {}).get("filter", {})
+    filter = config.get("collections", {}).get(
+        collection, {}).get("filter", {})
     return get_data(collection, filter=filter, limit=limit, skip=skip)
 
 
@@ -44,6 +46,22 @@ def json_collection(collection):
     if collection not in config.get("collections", {}).keys():
         return f"The collection \"{collection}\" does not exist", 500
     paths = get_json_collection(collection)
+    return {
+        "openapi": "3.0.0",
+        "info": {
+            "title": f"{title} - {collection}",
+            "version": version,
+            "description": f"Documentation générée automatiquement à partir d'un échantillon de 20 documents de la collection **{collection}**.",
+        },
+        "paths": paths,
+    }
+
+
+@app.get("/cartable")
+def cartable():
+    collection = "196901870"
+    df = get_s3_data(file=f"{collection}.csv")
+    paths = get_openapi_schema(collection_name=collection, df=df)
     return {
         "openapi": "3.0.0",
         "info": {
