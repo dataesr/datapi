@@ -1,10 +1,13 @@
 {
   "collections": {
     "atlas2023": {
+      "connector": "mongo",
       "filter": { "secret": "non" }
     },
-    "fr-esr-all-projects-synthese": {},
-    "196901870.csv": {
+    "fr-esr-all-projects-synthese": {
+      "connector": "mongo"
+    },
+    "196901870": {
       "connector": "cartable"
     }
   }

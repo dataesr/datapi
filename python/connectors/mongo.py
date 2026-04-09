@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+import pandas as pd
 import pymongo
 from retry import retry
 from typing import Union
@@ -37,3 +38,12 @@ def close_db():
   global client
   client.close()
   client = None
+
+
+def get_data(collection_name):
+    try:
+        collection = get_collection(collection_name)
+        docs = collection.find({}, {"_id": False}).limit(20)
+        return pd.DataFrame(list(docs))
+    except Exception as error:
+        raise Exception("The following error occurred: ", error)

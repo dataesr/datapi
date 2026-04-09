@@ -7,7 +7,8 @@ import pandas as pd
 load_dotenv()
 
 s3_access_key_id = os.getenv("OVH_ACCESS_KEY")
-s3_bucket = os.getenv("OVH_BUCKET")
+s3_bucket = os.getenv("OVH_BUCKET", "cartable")
+s3_prefix = os.getenv("OVH_PREFIX")
 s3_region_name = os.getenv("OVH_REGION", "gra")
 s3_secret_access_key = os.getenv("OVH_SECRET_KEY")
 
@@ -27,7 +28,7 @@ def get_client():
   return client
 
 
-def get_s3_data(file: str, bucket: str = "cartable-staging") -> pd.DataFrame:
+def get_s3_data(file: str) -> pd.DataFrame:
   client = get_client()
-  response = client.get_object(Bucket=bucket, Key=f"{s3_bucket}/{file}")
+  response = client.get_object(Bucket=s3_bucket, Key=f"{s3_prefix}/{file}")
   return pd.read_csv(response["Body"])
