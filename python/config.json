@@ -2,7 +2,7 @@
   "collections": {
     "atlas2023": {
       "connector": "mongo",
-      "filter": { "secret": "non" }
+      "filters": { "secret": "non" }
     },
     "fr-esr-all-projects-synthese": {
       "connector": "mongo"

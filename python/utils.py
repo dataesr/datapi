@@ -1,34 +1,3 @@
-from connectors.mongo import close_db, get_collection
-
-
-def infer_type(obj):
-    openapi_types = {
-        "bool": "boolean",
-        "datetime": "string",
-        "dict": "object",
-        "float": "number",
-        "int": "integer",
-        "list": "array",
-        "NoneType": "None",
-        "str": "string"
-    }
-    object_type = type(obj).__name__
-    openapi_type = openapi_types[object_type] if object_type in openapi_types else "unknown"
-    if openapi_type == "unknown":
-        print(f"Error: {object_type} is unknown.")
-    return openapi_type
-
-
-def get_mongo_data(collection_name, filter: dict = {}, limit: int = 20, skip: int = 0):
-    try:
-        collection = get_collection(collection_name)
-        data = list(collection.find(filter, {"_id": False}, limit=limit, skip=skip))
-        close_db()
-        return data
-    except Exception as error:
-        raise Exception("The following error occurred: ", error)
-
-
 def get_openapi_schema(collection_name, df):
     properties = {}
     for index, dtype in enumerate(df.dtypes):

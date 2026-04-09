@@ -43,7 +43,9 @@ def close_db():
 def get_data(collection_name):
     try:
         collection = get_collection(collection_name)
-        docs = collection.find({}, {"_id": False}).limit(20)
-        return pd.DataFrame(list(docs))
+        docs = collection.find({}, {"_id": False})
+        docs = pd.DataFrame(list(docs))
+        close_db()
+        return docs
     except Exception as error:
         raise Exception("The following error occurred: ", error)

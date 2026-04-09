@@ -5,7 +5,7 @@ import json
 
 import connectors.mongo as mongo
 import connectors.s3 as s3
-from utils import get_mongo_data, get_openapi_schema
+from utils import get_openapi_schema
 
 description = "From data to API"
 title = "datApi"
@@ -30,8 +30,18 @@ def home():
 def api_collection(collection, limit: int = 20, skip: int = 0):
     if collection not in config.get("collections", {}).keys():
         return f"The collection \"{collection}\" does not exist", 500
-    filter = config.get("collections", {}).get(collection, {}).get("filter", {})
-    return get_mongo_data(collection, filter=filter, limit=limit, skip=skip)
+    connector = config.get("collections", {}).get(collection, {}).get("connector")
+    if connector not in ["cartable", "mongo"]:
+        return f"The connector \"{connector}\" does not exist, it should be one of [\"cartable\", \"mongo\"]", 500
+    if connector == "mongo":
+        df = mongo.get_data(collection_name=f"{collection}")
+    elif connector == "cartable":
+        df = s3.get_s3_data(file=f"{collection}.csv")
+    filters = config.get("collections", {}).get(collection, {}).get("filters", {})
+    for key in filters.keys():
+        df = df[df[key] == filters[key]]
+    df = df.iloc[skip:skip + limit]
+    return json.loads(df.to_json(orient="records"))
 
 
 @app.get("/docs/{collection}")
